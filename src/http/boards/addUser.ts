@@ -1,0 +1,36 @@
+import getToken from "../../Helper/getToken"
+import { IBoard, IUser } from '../../Interfaces/Kanban';
+import { config } from "../config"
+
+interface IData {
+    board_id:string
+    users_identifications:Array<any>
+}
+
+
+export default async (id:string,user:IUser,type:'email' | 'username') : Promise<IBoard> => {
+    try{
+        const data : IData = {
+            board_id:id,
+            users_identifications:[{
+                [type]:user[type],
+            }]
+        }
+
+        const responce = await fetch(`${config.serverURL}/boards/add-users-to-board`,{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json',
+                'Authorization':`Bearer ${getToken()}`
+            },
+            body:JSON.stringify(data)
+        })
+
+        const board  = await responce.json()
+
+        return board
+
+    }catch(error){
+        return {id:'',title:'',cards:[]}
+    }
+}

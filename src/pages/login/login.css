@@ -1,0 +1,52 @@
+.modal-auth__body{
+    display: flex;
+    flex-direction: column;
+}
+.modal-auth__body{
+    max-width: 400px;
+    width: 100%;
+    border: 1px solid rgba(208, 153, 219, 0.438);
+    padding: 25px;
+    border-radius: 10px;
+    background: rgba(199, 199, 255, 0.112);
+}
+.modal-auth__inputs{
+    margin: 15px 0px;
+}
+.modal-auth__input-wrapper{
+    max-width: 380px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 10px;
+
+}
+.modal-auth__input-wrapper input{
+    width: 100%;
+    margin-top: 7px;
+
+}
+.modal-auth-btn{
+    margin-top: 12px;
+    cursor: pointer;   
+}
+.modal-auth-btn{
+    background: white;
+    border: 1px solid gray;
+    padding: 5px 12px;
+    max-width: 160px;
+    margin: 0 auto;
+    transition: all 0.3s ease;
+}
+.modal-auth-btn:hover{
+    opacity: 0.7;
+}
+.modal-auth__title{
+    font-weight: 600;
+}
+.modal-auth__title a {
+    font-weight: 400;
+    color: blue;
+    text-decoration: underline;
+}

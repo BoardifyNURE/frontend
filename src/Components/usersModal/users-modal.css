@@ -1,0 +1,92 @@
+.modal{
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.265);
+    z-index: 5;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.users-modal{
+    max-width: 400px;
+    height: 400px;
+    width: 100%;
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+}
+.users-modal__close{
+    cursor: pointer;
+}
+.users-modal__head{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.users-modal__close img{
+    max-width: 30px;
+}
+.users-modal__title{
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+.users-modal__add-title{
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+    font-weight: 600;
+}
+.users-modal__add-btns{
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.users-modal__add-btns button{
+    cursor: pointer;
+    padding: 4px 7px;
+    background: transparent;
+    transition:background 0.3s ease;
+}
+.users-modal__add-btns button:hover{
+    background: rgba(128, 128, 128, 0.107);
+}
+.users-modal__add{
+    margin-top: 60px;
+}
+.users-modal__add-inputs{
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.users-modal__add-input{
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.users-modal__add-button{
+    margin-top: 22px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 15px;
+    border: 0.4px solid gray;
+
+    transition: background 0.3s ea;
+}
+.users-modal__add-button:hover{
+    background: rgba(128, 128, 128, 0.199);
+}
+.users-modal__add-btns button.selected{
+    background: rgba(173, 173, 173, 0.482);
+}
+
+@media (max-width:410px) {
+    .users-modal{
+        max-width: 95vw;
+    }
+}
