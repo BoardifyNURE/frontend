@@ -1,0 +1,46 @@
+.custom-input__list.users-list{
+    position: relative;
+    max-width: 180px;
+}
+.custom-input__list-btn-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 2px solid gray;
+    padding: 0px 10px;
+    cursor: pointer;
+}
+
+.custom-input__list-btn-wrapper .custom-input__list-btn{
+    border: none ;
+    padding: 4px;
+    max-width: 100px;
+    cursor: pointer;
+}
+.custom-input__list-btn-wrapper svg{
+    width: 15px;
+}
+.custom-input__users-list{
+    position: absolute;
+    z-index: 1;
+    top: 30px;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    border: 1.5px solid gray;
+    background: white;
+    max-height: 130px;
+    overflow-y: auto;
+}
+.custom-input__users-list .select-user-btn{
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid gray;
+    border-radius: 0px;
+    height: 40px;
+}
+
+.user-list{
+    background: white;
+}

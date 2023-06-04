@@ -2,7 +2,7 @@ import {FC, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Column from "../Column/Column";
-import { ICard, IColumn, TaskStatus,INewTask} from "../../Interfaces/Kanban";
+import { ICard, IColumn, TaskStatus,INewTask, IUser} from "../../Interfaces/Kanban";
 import fetchColumns from "../../http/columns/fetchColumns";
 import createColumn from "../../http/columns/createColumn";
 import removeColumn from "../../http/columns/removeColumn";
@@ -18,6 +18,7 @@ import fetchAvailableStatuses from "../../http/fetchAvailableStatuses";
 import fetchTasks from "../../http/tasks/fetchTasks";
 import { ITodos } from "../../Interfaces/Kanban";
 import fetchTodos from "../../http/todos/fetchTodos";
+import fetchBoardUsers from "../../http/users/fetchBoardUsers";
 
 interface IProps {
     boardId:string
@@ -202,7 +203,11 @@ const Columns : FC<IProps> = ({boardId}) => {
       order:card.order,
       column_id:card.column_id
     }
-    
+
+    if(card.assignee_id){
+      newTask.assignee_id = card.assignee_id
+    }
+
     const tempBoardsList = [...columns];
 
     const cards = tempBoardsList[boardIndex].cards;
@@ -350,10 +355,17 @@ const Columns : FC<IProps> = ({boardId}) => {
   
         const statusesData : Array<string> = await fetchAvailableStatuses(task.id || '')
 
+        const users : Array<IUser> = await fetchBoardUsers(boardId)
+
+        const selectedUser : IUser | undefined = users.find((user:IUser) => {
+          return user.id === task.assignee_id
+        })
+
         tasksData.push({
           ...task,
           todos:todosData.sort((a,b) => (a.order || 0) - (b.order || 0)),
-          available_statuses:statusesData
+          available_statuses:statusesData,
+          selectedUser:selectedUser
         })
       }
 

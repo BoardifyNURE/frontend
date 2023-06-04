@@ -90,5 +90,5 @@
   left: 10px;
 }
 .select-user-btn.selected{
-  border: 2px solid green;
+  border: 1px solid green !important;
 }

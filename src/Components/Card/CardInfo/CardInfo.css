@@ -1,4 +1,5 @@
 .cardinfo {
+  position: relative;
   padding: 30px;
   display: flex;
   flex-direction: column;
@@ -6,7 +7,12 @@
   max-width: 680px;
   width: 100%;
 }
-
+.cardinfo-close{
+  cursor: pointer;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
 .cardinfo-box {
   width: 100%;
   display: flex;
@@ -132,9 +138,9 @@
 }
 
 .cardinf-status-list{
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 7px;
   align-items: flex-start;
   justify-content: flex-start;
 }
@@ -148,7 +154,7 @@
   font-size:15px;
   border: 1px solid ;
   padding: 5px;
-  max-width: 170px;
+  max-width: 180px;
   width: 100%;
 }
 .cardinf-status-item svg{
@@ -182,4 +188,22 @@
 
 .cardinfo-box-task-confirm:hover{
   background: rgba(128, 128, 128, 0.107);
+}
+
+.custom-input__list-status-btn{
+  width: 142px;
+  border: none;
+}
+.custom-input__list-btn-wrapper{
+  cursor: pointer;
+}
+.custom-input__list-btn-wrapper input{
+  cursor: pointer;
+}
+.status-list{
+  position: absolute;
+  top: 30px;
+  max-width: 180px;
+  width: 100%;
+  background: white;
 }

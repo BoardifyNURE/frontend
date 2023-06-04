@@ -36,6 +36,7 @@ export interface ICard {
   assignee_id?:string;
   column_id?:string
   available_statuses?:Array<string>
+  selectedUser?:IUser
 }
 
 export interface INewBoard {

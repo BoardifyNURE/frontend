@@ -1,6 +1,8 @@
-import { useMemo, useState } from "react";
-import {  CheckSquare, List, Type ,Check} from "react-feather";
-import { ICard, INewTodos, ITodos } from "../../../Interfaces/Kanban";
+import { useEffect, useMemo, useState } from "react";
+import {  CheckSquare, List, Type ,Check, ArrowDown,ArrowUp,User,X} from "react-feather";
+import { ICard, INewTodos, ITodos, IUser } from "../../../Interfaces/Kanban";
+import UserList from "../../UserList/UserList";
+import TextArea from "../../TextArea/TextArea";
 import Modal from "../../Modal/Modal";
 import editTodo from "../../../http/todos/editTodo";
 import createTodo from "../../../http/todos/createTodo";
@@ -9,23 +11,32 @@ import fetchAvailableStatuses from "../../../http/fetchAvailableStatuses";
 import Todos from "../../Todos/Todos";
 import TextInput from "../../TextInput/TextInput";
 import AddColumnInput from "../../AddColumnInput/AddColumnInput";
+import fetchBoardUsers from "../../../http/users/fetchBoardUsers";
 import "./CardInfo.css";
 
 interface CardInfoProps {
   onClose: () => void;
   card: ICard;
   boardId: string;
+  columnId:string;
   updateCard: (boardId: string, cardId: string, card: ICard,isLocal?:boolean) => void;
 }
 
 function CardInfo(props: CardInfoProps) {
-  const { onClose, card, boardId, updateCard } = props;
+  const { onClose, card, boardId, updateCard ,columnId} = props;
+  const [isOpenStatusList,setIsOpenStatusList] = useState<boolean>(false)
+  const [selectedUser,setSelectedUser] = useState<IUser>(card.selectedUser || {email:'',username:'',id:''})
+  const [boardUsers,setBoardUsers] = useState<Array<IUser>>([])
   const [cardValues, setCardValues] = useState<ICard>({
     ...card,todos:card.todos,
   });
   
   const updateInfo = (value: string,name: string) => {
-    setCardValues({...card,title:cardValues.title,description:cardValues.title,[name]:value});
+    const updatedCard = {...card,[name]:value}
+
+    setCardValues(updatedCard);
+
+    updateCard(card.column_id || '',card.id || '',updatedCard)
   };
 
   const addTodos = async (value: string) : Promise<void> => {
@@ -47,7 +58,11 @@ function CardInfo(props: CardInfoProps) {
   const removeTodos = async (id: string) : Promise<void> => {
     const todos = [...card.todos];
 
-    const tempTasks = todos.filter((item) => item.id !== id);
+    const tempTasks = todos.filter((item) => item.id !== id).map((todo:ITodos,index:number) => {
+      return (
+        {...todo,order:index}
+      )
+    });
 
     updateCard(card.column_id || '',card.id || '',{
       ...card,
@@ -211,26 +226,41 @@ function CardInfo(props: CardInfoProps) {
       status:status,
       available_statuses:statuses,
     },true)
+
+    setIsOpenStatusList(false)
   }
   
-  const confirmUpdate = () : void => {
-    updateCard(boardId, cardValues.id, {
+  const selectUserHandler = (user:IUser) : void => {
+    selectedUser === user
+    ?
+    setSelectedUser({email:'',username:'',id:''})
+    :
+    setSelectedUser(user)
+
+    updateCard(card.column_id || '',card.id || '',{
       ...card,
-      title:cardValues.title,
-      description:cardValues.description,
-      status:cardValues.status
+      assignee_id:user.id,
+      selectedUser:user,
     })
-    onClose()
+
   }
 
   const calculatedPercent = useMemo(() => {
     return calculatePercent();
   },[card])
 
+  useEffect(() => {
+    fetchBoardUsers(boardId).then((data : Array<IUser>) => {
+      setBoardUsers(data)
+    })
+  },[])
+
   return (
     <Modal onClose={onClose}>
       <div className="cardinfo">
-        
+      <div className={'cardinfo-close'}>
+      <X onClick={onClose}/>
+      </div>
         <div className="cardinfo-box">
           <div className="cardinfo-box-title">
             <Type />
@@ -250,7 +280,7 @@ function CardInfo(props: CardInfoProps) {
             <Type />
             <p>Description</p>
           </div>
-          <TextInput
+          <TextArea
             name={'description'}
             defaultValue={cardValues.description}
             text={cardValues.description || "Add a Description"}
@@ -259,37 +289,123 @@ function CardInfo(props: CardInfoProps) {
           />
         </div>
 
+
+        <div className="cardinfo-box">
+          <div className="cardinfo-box-title">
+            <User/>
+            <p>Assigned</p>
+          </div>
+          {/* <div className="cardinf-status-list">
+          <div 
+          tabIndex={0}
+          onClick={() => setIsOpenUsersList((prev) => !prev)}
+          className='custom-input__list-btn-wrapper'>
+              <input
+              className='custom-input__list-status-btn'
+              value={card.status || 'Select status'}
+              type='button'
+              />
+              {
+                  isOpenUsersList
+                  ?
+                  <ArrowUp/>
+                  :
+                  <ArrowDown/>
+              }
+          </div>
+            {
+              card.available_statuses?.length && isOpenUsersList
+              ?
+              <div className="status-list">
+                {
+                  card.available_statuses.map((status,index) => {
+
+                    return (
+                        status === cardValues.status
+                        ?
+                        <div
+                        key={status + index} 
+                        tabIndex={(index + 1)} 
+                        className="cardinf-status-item current">
+                          <Check/>
+                          {status}
+                        </div>
+                        :
+                        <div
+                        key={status + index} 
+                        tabIndex={(index + 1)} 
+                        onClick={() => updateStatus(status)} 
+                        className="cardinf-status-item">
+                          {status}
+                        </div>
+                    )
+                })}
+              </div>
+              :
+              <></>
+            }
+          </div> */}
+
+          <UserList
+          selectUserHandler={selectUserHandler}
+          selectedUser={selectedUser}
+          boardUsers={boardUsers}
+          />
+
+        </div>
+
+
         <div className="cardinfo-box">
           <div className="cardinfo-box-title">
             <List />
             <p>Status - {card.status}</p>
           </div>
           <div className="cardinf-status-list">
+          <div 
+                tabIndex={0}
+                onClick={() => setIsOpenStatusList((prev) => !prev)}
+                className='custom-input__list-btn-wrapper'>
+                    <input
+                    className='custom-input__list-status-btn'
+                    value={card.status || 'Select status'}
+                    type='button'
+                    />
+                    {
+                        isOpenStatusList
+                        ?
+                        <ArrowUp/>
+                        :
+                        <ArrowDown/>
+                    }
+                </div>
             {
-              card.available_statuses?.length
+              card.available_statuses?.length && isOpenStatusList
               ?
-              card.available_statuses.map((status,index) => {
+              <div className="status-list">
+                {
+                  card.available_statuses.map((status,index) => {
 
-                  return (
-                      status === cardValues.status
-                      ?
-                      <div
-                      key={status + index} 
-                      tabIndex={(index + 1)} 
-                      className="cardinf-status-item current">
-                        <Check/>
-                        {status}
-                      </div>
-                      :
-                      <div
-                      key={status + index} 
-                      tabIndex={(index + 1)} 
-                      onClick={() => updateStatus(status)} 
-                      className="cardinf-status-item">
-                        {status}
-                      </div>
-                  )
-              })
+                    return (
+                        status === cardValues.status
+                        ?
+                        <div
+                        key={status + index} 
+                        tabIndex={(index + 1)} 
+                        className="cardinf-status-item current">
+                          <Check/>
+                          {status}
+                        </div>
+                        :
+                        <div
+                        key={status + index} 
+                        tabIndex={(index + 1)} 
+                        onClick={() => updateStatus(status)} 
+                        className="cardinf-status-item">
+                          {status}
+                        </div>
+                    )
+                })}
+              </div>
               :
               <></>
             }
@@ -325,15 +441,9 @@ function CardInfo(props: CardInfoProps) {
             onSubmit={addTodos}
           />
         </div>
-
-        <input 
-        onClick={confirmUpdate}
-        className="cardinfo-confrim"
-        title="Update task" 
-        value={'Confirm updates'} 
-        type="button"/>
         
       </div>
+
     </Modal>
   );
 }

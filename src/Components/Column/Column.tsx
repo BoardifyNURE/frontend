@@ -117,6 +117,7 @@ const Column = (props: BoardProps) => {
         <div className="board-cards custom-scroll">
           {column.cards?.map((item) => (
             <Card
+              boardId={boardId}
               key={item.id}
               card={item}
               column_id={column.id || ''}

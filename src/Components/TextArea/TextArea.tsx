@@ -1,5 +1,6 @@
 import { X } from "react-feather";
 import { useState } from "react";
+import './textarea.css'
 
 interface CustomInputProps {
   text: string;
@@ -11,7 +12,7 @@ interface CustomInputProps {
   defaultValue: string;
   buttonText?: string;
 }
-const TextInput = (props: CustomInputProps) => {
+const TextArea = (props: CustomInputProps) => {
   const {
     text,
     onSubmit,
@@ -44,8 +45,8 @@ const TextInput = (props: CustomInputProps) => {
           className={`custom-input-edit ${editClass ? editClass : ""}`}
           onSubmit={submission}
         >
-          <input
-            type="text"
+          <textarea
+          className="custom-input__textarea"
             value={inputText}
             placeholder={placeholder || 'Title'}
             onChange={(event) => inputsHandler(event.target.value,name)}
@@ -68,4 +69,4 @@ const TextInput = (props: CustomInputProps) => {
   );
 }
 
-export default TextInput;
+export default TextArea;

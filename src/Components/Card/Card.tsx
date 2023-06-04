@@ -7,6 +7,7 @@ import "./Card.css";
 
 
 interface CardProps {
+  boardId:string
   card: ICard;
   column_id: string;
   removeCard: (boardId: string, cardId: string) => void;
@@ -17,7 +18,7 @@ interface CardProps {
 
 
 function Card(props: CardProps) {
-  const { card, column_id, removeCard, onDragEnd, onDragEnter, updateCard } =
+  const { card, column_id, removeCard, onDragEnd, onDragEnter, updateCard ,boardId} =
     props;
   const { id, title, description, todos,  } = card;
   const [showDropdown, setShowDropdown] = useState(false);
@@ -29,7 +30,8 @@ function Card(props: CardProps) {
         <CardInfo
           onClose={() => setShowModal(false)}
           card={card}
-          boardId={column_id}
+          boardId={boardId}
+          columnId={column_id}
           updateCard={updateCard}
         />
       )}

@@ -1,0 +1,9 @@
+.custom-input__textarea{
+    border: 2px solid #0079bf;
+    outline: none;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: inherit;
+    font-family: inherit;
+    max-width: 560px;
+}

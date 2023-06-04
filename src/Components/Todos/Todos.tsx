@@ -21,7 +21,7 @@ const Todos : FC<IProps> = ({
         removeTodos,
         editCardOrder
     }) => {
-    console.log(card.todos)
+   
     return (
         <div className="cardinfo-box-task-list">
             {
@@ -58,8 +58,20 @@ const Todos : FC<IProps> = ({
                             />
                             :
                             <div className="cardinfo-box-task-btns">
-                                <ArrowUp onClick={() => editCardOrder(item.id,'up')}/>
-                                <ArrowDown onClick={() => editCardOrder(item.id,'down')}/>
+                                {
+                                    item.order === 0
+                                    ?
+                                    <></>
+                                    :
+                                    <ArrowUp onClick={() => editCardOrder(item.id,'up')}/>
+                                }
+                                {
+                                    item.order === (card.todos.length - 1)
+                                    ?
+                                    <></>
+                                    :
+                                    <ArrowDown onClick={() => editCardOrder(item.id,'down')}/>
+                                }
                                 <Edit tabIndex={1} onClick={() => editTodoMode(item.id)} />
                                 <Trash tabIndex={2} onClick={() => removeTodos(item.id)} />
                             </div>
