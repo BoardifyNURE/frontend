@@ -1,5 +1,7 @@
-import useLogin from "../../hooks/useLogin"
+import { useMemo } from "react"
 import { Link } from "react-router-dom"
+import useLogin from "../../hooks/useLogin"
+import LoaderCustom from "../../Components/loader/Loader"
 import './login.css'
 
 export default function Login() {
@@ -9,6 +11,12 @@ export default function Login() {
         inputsHandler,
         confirmLogin
     }  = useLogin()
+
+    const isValid : boolean = useMemo(() : boolean => {
+        return data.email.length > 4 && data.password.length > 2
+    },[data])
+
+    if(loading) return <LoaderCustom/>
 
   return (
     <div onSubmit={(e) => {
@@ -26,7 +34,8 @@ export default function Login() {
                     htmlFor="login-email">
                         Email:
                     </label>
-                    <input
+                    <input 
+                    autoFocus={true}
                     placeholder="example@gmail.com"
                     id="login-email"
                     value={data.email}
@@ -48,12 +57,12 @@ export default function Login() {
                     />
                 </div>
             </div>
-            <button
+            <input
+            type="submit"
+            value={'Login'}
             className="modal-auth-btn"
-            disabled={loading}
-            >
-                Login
-            </button>
+            disabled={!isValid}
+            />                
         </form>
     </div>
   )

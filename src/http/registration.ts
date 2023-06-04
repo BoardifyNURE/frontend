@@ -2,7 +2,12 @@ import axios from 'axios'
 import {config} from './config'
 import { IRegistration } from '../Interfaces/Kanban'
 
-export default async (data:IRegistration) : Promise<boolean> => {
+export interface IReturnRegister {
+    success:boolean
+    message:string
+}
+
+export default async (data:IRegistration) : Promise<IReturnRegister> => {
     try{
 
         const responce = await fetch(`${config.serverURL}/auth/signup`,{
@@ -13,8 +18,15 @@ export default async (data:IRegistration) : Promise<boolean> => {
             body:JSON.stringify(data)
         })
 
-        return true
+        const result = await responce.json()
+
+        if(result.statusCode === 400){
+            return {success:false,message:result.message}
+        }
+
+        return {success:true,message:'Registration successful'}
+
     }catch(error){
-        return false
+        return {success:false,message:'Register error'}
     }
 }

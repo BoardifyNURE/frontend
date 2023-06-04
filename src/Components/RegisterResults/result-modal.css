@@ -1,0 +1,43 @@
+.reg-modal__body{
+    max-width: 400px;
+    height: 250px;
+    width: 100%;
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.reg-modal__success{
+    font-size: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+}
+.reg-modal__success svg{
+    width: 42px;
+    height: 42px;
+}
+.reg-modal__btn{
+    max-width: 100%;
+    width: 100%;
+    margin-top: auto;
+    padding-bottom: 20px;
+}
+.reg-modal__btn a {
+    display: block;
+    text-align: center;
+    max-width: 100%;
+    width: 100%;
+    padding: 6px;
+    border: 1px solid gray;
+
+    transition: all 0.3s ease;
+}
+
+.reg-modal__btn a:hover{
+    background: rgba(128, 128, 128, 0.224);
+}

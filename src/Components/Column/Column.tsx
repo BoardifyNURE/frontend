@@ -7,7 +7,9 @@ import { ICard, IColumn } from '../../Interfaces/Kanban';
 import "./column.css";
 
 interface BoardProps {
+  boardId:string
   column: IColumn;
+  columns: IColumn[];
   addCard: (boardId:string,data:any) => void;
   removeColumn: (boardId: string) => void;
   removeCard: (boardId: string, cardId: string) => void;
@@ -22,7 +24,9 @@ interface BoardProps {
 
 const Column = (props: BoardProps) => {
   const {
+    boardId,
     column,
+    columns,
     addCard,
     removeColumn,
     removeCard,
@@ -123,6 +127,7 @@ const Column = (props: BoardProps) => {
             />
           ))}
           <CustomInput
+            columnId={boardId}
             text="+ Add Task"
             placeholder="Enter Card Title"
             displayClass="board-add-card"
@@ -131,12 +136,31 @@ const Column = (props: BoardProps) => {
           />
         </div>
         <div className="column-arrows">
-          <ArrowLeft 
-          onClick={() => editColumnOrder(column.id || '','left')}
-          tabIndex={1}/>
-          <ArrowRight 
-          onClick={() => editColumnOrder(column.id || '','right')}
-          tabIndex={2}/>
+          {
+            column.order === 0
+            ?
+            <div className="blocked-arrow">
+              <ArrowLeft 
+              tabIndex={1}/>
+            </div>
+            :
+            <ArrowLeft 
+            onClick={() => editColumnOrder(column.id || '','left')}
+            tabIndex={1}/>
+          }
+          {
+            column.order === (columns.length - 1)
+            ?
+            <div className="blocked-arrow">
+              <ArrowRight 
+              tabIndex={2}/>
+            </div>
+            :
+            <ArrowRight 
+            onClick={() => editColumnOrder(column.id || '','right')}
+            tabIndex={2}/>
+          }
+      
         </div>
       </div>
     </div>

@@ -334,6 +334,10 @@ const Columns : FC<IProps> = ({boardId}) => {
     
     for (let index = 0; index < columns.length; index++) {
       const column = columns[index];
+
+      if(column.order < 0){
+        column.order = 0
+      }
       
       const tasks : Array<ICard> = await fetchTasks(column.id || '')
       
@@ -359,7 +363,7 @@ const Columns : FC<IProps> = ({boardId}) => {
     setColumns(columnsData)
 
     setLoading(false)
-  }
+  };
 
   useEffect(() => {
     if(!localStorage.getItem('accessToken')){
@@ -368,7 +372,7 @@ const Columns : FC<IProps> = ({boardId}) => {
       fetchData();
     }
   }, []);
-  
+
   return (
     <div className="app">
       <Nav/>
@@ -381,8 +385,10 @@ const Columns : FC<IProps> = ({boardId}) => {
         <div className="app-boards">
           {columns.map((item,index) => (
             <Column
-              confrimEdit={editColumnInputTitle}
+            boardId={boardId}
               key={item.id || index}
+              confrimEdit={editColumnInputTitle}
+              columns={columns}
               column={item}
               addCard={addCardHandler}
               editColumn={editColumnHandler}

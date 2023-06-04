@@ -1,6 +1,15 @@
+import { useMemo, useState } from 'react';
 import { Link } from "react-router-dom"
+import { IReturnRegister } from '../../http/registration';
 import useRegistation from '../../hooks/useRegistration'
+import RegisterResulltsModal from '../../Components/RegisterResults/RegisterResulltsModal';
+import LoaderCustom from "../../Components/loader/Loader"
 import './registration.css'
+
+interface IRegisterResults {
+    success:boolean
+    modalState:boolean
+}
 
 export default function Registration() {
     const {
@@ -9,14 +18,48 @@ export default function Registration() {
         inputsHandler,
         confirmRegistration
     }  = useRegistation()
-    
-    
+
+    const [isSuccessRegister,setIsSuccessRegister] = useState<IRegisterResults>({success:false,modalState:false})
+    const [message,setMessage] = useState<string>('')
+    const isValid : boolean = useMemo(() : boolean => {
+        return (
+            data.email.length > 4 
+            && 
+            data.password.length > 2
+            &&
+            data.username.length > 2
+            &&
+            data.firstName.length > 2
+            &&
+            data.lastName.length > 2
+        )
+    },[data])
+
+    const confirmRegister = async (e:any) : Promise<void> => {
+        e.preventDefault()
+
+        const {success,message} : IReturnRegister = await confirmRegistration()
+
+        setMessage(message)
+
+        setIsSuccessRegister({success,modalState:true})
+
+    } 
+
+    const modalHandler = (event:any) : void => {
+        const targetId = event.target.id
+        
+        if(targetId === 'close-modal'){
+            setIsSuccessRegister({...isSuccessRegister,modalState:false})
+        }
+        
+    }
+
+    if(loading) return <LoaderCustom/>
 
   return (
-    <div onSubmit={(e) => {
-        e.preventDefault()
-        confirmRegistration()
-    }} className="modal-auth">
+    <>
+    <div onSubmit={confirmRegister} className="modal-auth">
         <form className="modal-auth__body">
             <div className="modal-auth__title">
                 <span>Sign up or </span>
@@ -88,13 +131,25 @@ export default function Registration() {
                     />
                 </div>
             </div>
-            <button
+            <input
+            type="submit"
+            value={'Confirm register'}
             className="modal-auth-btn"
-            disabled={loading}
-            >
-                Confirm register
-            </button>
+            disabled={!isValid}
+            />   
         </form>
     </div>
+    {
+        isSuccessRegister.modalState
+        ?
+        <RegisterResulltsModal
+        isSuccess={isSuccessRegister.success}
+        message={message}
+        modalHandler={modalHandler}
+        />
+        :
+        <></>
+    }
+    </>
   )
 }

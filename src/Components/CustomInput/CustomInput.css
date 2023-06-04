@@ -28,6 +28,7 @@
   outline: none;
   font-size: 1rem;
   padding: 10px;
+  width: 100%;
 }
 
 .custom-input-edit-footer {
@@ -58,4 +59,36 @@
   cursor: pointer;
   height: 24px;
   width: 24px;
+}
+.custom-input__list-title{
+  margin: 4px 0;
+}
+
+.custom-input__list{
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.select-user-btn{
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.select-user-btn:hover{
+  opacity: 0.8;
+  background: rgba(128, 128, 128, 0.121);
+}
+.select-user-btn__wrapper{
+  position: relative;
+  max-width: 100%;
+}
+.select-user-btn__wrappe input{
+  width: 100%;
+}
+.select-user-btn__wrapper svg{
+  position: absolute;
+  top: 25%;
+  left: 10px;
+}
+.select-user-btn.selected{
+  border: 2px solid green;
 }

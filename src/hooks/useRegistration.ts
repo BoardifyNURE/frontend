@@ -4,12 +4,14 @@ import registration from '../http/registration';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../store/slices/auth';
+import { IReturnRegister } from '../http/registration';
+
 
 interface IReturnLogin {
     data:IRegistration
     loading:boolean
     inputsHandler : (name:string,value:string) => void
-    confirmRegistration : () => Promise<void>
+    confirmRegistration : () => Promise<IReturnRegister>
 }
 
 const useRegistration = () : IReturnLogin  => {
@@ -22,17 +24,18 @@ const useRegistration = () : IReturnLogin  => {
         setData({...data,[name]:value})
     },[data])
 
-    const confirmRegistration = async () : Promise<void> => {
+    const confirmRegistration = async () : Promise<IReturnRegister> => {
         setLoading(true)
 
-        const isSuccess = await registration(data)
+        const {success,message} : IReturnRegister = await registration(data)
 
         setLoading(false)
 
-        if(isSuccess){
+        if(success){
             dispatch(setUser({user:data,isAuth:true}))
-            navigate('/boards')
+            return {success,message} 
         }
+        return {success,message} 
     }
 
     return {data,loading,inputsHandler,confirmRegistration}
