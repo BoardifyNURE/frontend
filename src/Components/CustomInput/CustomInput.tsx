@@ -52,7 +52,7 @@ function CustomInput(props: CustomInputProps) {
     if (inputText && onSubmit) {
       setInputText({title:'',description:'',assigneeId:''});
       setSelectedUser({email:'',username:'',id:''})
-      onSubmit({...inputText,assigneeId:selectedUser?.id});
+      onSubmit({...inputText,assigneeId:selectedUser?.id,user:selectedUser});
     }
     setIsCustomInput(false);
   };

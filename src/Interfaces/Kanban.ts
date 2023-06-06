@@ -24,6 +24,7 @@ export interface INewTask {
   status:TaskStatus
   order?:number
   column_id?:string
+  selectedUser?:IUser
 }
 
 export interface ICard {

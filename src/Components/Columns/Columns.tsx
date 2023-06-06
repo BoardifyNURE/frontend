@@ -132,7 +132,7 @@ const Columns : FC<IProps> = ({boardId}) => {
 
   };
 
-  const addCardHandler = async (columnId:string,data:{title:string,description:string,assigneeId?:string}) : Promise<void> => {
+  const addCardHandler = async (columnId:string,data:{title:string,description:string,assigneeId?:string,user?:IUser}) : Promise<void> => {
     const boardIndex = columns.findIndex((item: IColumn) => item.id === columnId);
 
     if (
@@ -164,9 +164,9 @@ const Columns : FC<IProps> = ({boardId}) => {
 
     tempBoardsList[boardIndex]?.cards
     ?
-    tempBoardsList[boardIndex].cards.push({...task,available_statuses:statuses})
+    tempBoardsList[boardIndex].cards.push({...task,available_statuses:statuses,selectedUser:data.user})
     :
-    tempBoardsList[boardIndex].cards = [{...task,available_statuses:statuses}]
+    tempBoardsList[boardIndex].cards = [{...task,available_statuses:statuses,selectedUser:data.user}]
 
     setColumns(tempBoardsList);
   };

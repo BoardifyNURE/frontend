@@ -203,7 +203,7 @@ function CardInfo(props: CardInfoProps) {
     await editTodo({...updatedTodo,order:targetTodoOrder},updatedTodo.id)
   } 
 
-  const calculatePercent = () => {
+  const calculatePercent = () : number => {
     if (!card.todos?.length) return 0;
     const completed = card.todos?.filter(
       (item) => item.is_done,
@@ -245,7 +245,7 @@ function CardInfo(props: CardInfoProps) {
 
   }
 
-  const calculatedPercent = useMemo(() => {
+  const calculatedPercent = useMemo(() : number => {
     return calculatePercent();
   },[card])
 
