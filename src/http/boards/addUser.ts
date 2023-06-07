@@ -7,8 +7,13 @@ interface IData {
     users_identifications:Array<any>
 }
 
+interface IReturnData {
+    message?:any
+    statusCode?:number
+    error?:string
+}
 
-export default async (id:string,user:IUser,type:'email' | 'username') : Promise<IBoard> => {
+export default async (id:string,user:IUser,type:'email' | 'username') : Promise<IReturnData> => {
     try{
         const data : IData = {
             board_id:id,
@@ -26,11 +31,11 @@ export default async (id:string,user:IUser,type:'email' | 'username') : Promise<
             body:JSON.stringify(data)
         })
 
-        const board  = await responce.json()
+        const result  = await responce.json()
 
-        return board
+        return result
 
     }catch(error){
-        return {id:'',title:'',cards:[]}
+        return {}
     }
 }

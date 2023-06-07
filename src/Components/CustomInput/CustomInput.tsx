@@ -50,11 +50,13 @@ function CustomInput(props: CustomInputProps) {
   const submission = (e: any) : void => {
     e.preventDefault();
     if (inputText && onSubmit) {
-      setInputText({title:'',description:'',assigneeId:''});
       setSelectedUser({email:'',username:'',id:''})
       onSubmit({...inputText,assigneeId:selectedUser?.id,user:selectedUser});
     }
-    setIsCustomInput(false);
+    if(inputText.title.length >= 2){
+      setIsCustomInput(false);
+      setInputText({title:'',description:'',assigneeId:''});
+    }
   };
 
   useEffect(() => {

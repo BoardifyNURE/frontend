@@ -1,5 +1,5 @@
 import {FC} from 'react'
-import { Check } from 'react-feather'
+import { Check , X} from 'react-feather'
 import { Link } from 'react-router-dom'
 import './result-modal.css'
 
@@ -13,7 +13,8 @@ const RegisterResulltsModal  : FC<IProps> = ({modalHandler,message,isSuccess})  
 
   return (
     <div onClick={modalHandler} id='close-modal' className='modal'>
-      <div id='close-modal2' className="reg-modal__body">
+      <div className="reg-modal__body">
+        <X id='close-modal' tabIndex={1} className='reg-modal__body-close'/>
         <div className="reg-modal__success">
             <div>
                 {message}
@@ -27,7 +28,17 @@ const RegisterResulltsModal  : FC<IProps> = ({modalHandler,message,isSuccess})  
             }
         </div>
         <div className='reg-modal__btn'>
-        <Link to={'Login'}>Login</Link>
+          {
+            isSuccess
+            ?
+            <Link to={'Login'}>Login</Link>
+            :
+            <input 
+            
+            id='close-modal'
+            value={'Back to registration'}
+            type='button'/>
+          }
         </div>
       </div>
     </div>

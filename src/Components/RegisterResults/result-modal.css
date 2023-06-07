@@ -1,4 +1,5 @@
 .reg-modal__body{
+    position: relative;
     max-width: 400px;
     height: 250px;
     width: 100%;
@@ -11,6 +12,7 @@
     align-items: center;
 }
 .reg-modal__success{
+    margin-top: 15px;
     font-size: 25px;
     display: flex;
     align-items: center;
@@ -40,4 +42,26 @@
 
 .reg-modal__btn a:hover{
     background: rgba(128, 128, 128, 0.224);
+}
+
+.reg-modal__btn input {
+    display: block;
+    text-align: center;
+    max-width: 100%;
+    width: 100%;
+    padding: 6px;
+    border: 1px solid gray;
+
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.reg-modal__btn input:hover{
+    background: rgba(128, 128, 128, 0.224);
+}
+.reg-modal__body-close{
+    position: absolute;
+    top: 11px;
+    right: 11px;
+    cursor: pointer;
 }

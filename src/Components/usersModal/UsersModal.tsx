@@ -21,9 +21,23 @@ const UsersModal : FC<IProps> = ({boardId,toggleModal}) => {
   const inputsHandler = (name:string,value:string) : void => {
     setUser({...user,[name]:value})
   }
-  const confirmAddUser = async () : Promise<void> => {
-    await addUser(boardId,user,searchType ? 'email' : 'username')
-    reloadWindow()
+  const confirmAddUser = async (e:any) : Promise<void> => {
+    e.preventDefault()
+    if(user.email.length < 4 && searchType){
+      return alert('Email is required (min 4 characters)')
+    }
+
+    if(user.username.length < 4 && !searchType){
+      return alert('Username is required (min 4 characters)')
+    }
+
+    const result = await addUser(boardId,user,searchType ? 'email' : 'username')
+
+    if(result.message){
+      alert(String(result.message))
+    }else{
+      reloadWindow()
+    }
   }
 
   useEffect(() => {
@@ -34,8 +48,9 @@ const UsersModal : FC<IProps> = ({boardId,toggleModal}) => {
   },[])
 
   return (
-    <div 
+    <form 
     id='close-modal'
+    onSubmit={confirmAddUser}
     onClick={(e:any) => toggleModal(e.target.id)} 
     className='modal'
     >
@@ -73,12 +88,18 @@ const UsersModal : FC<IProps> = ({boardId,toggleModal}) => {
             <div className='users-modal__add-btns'>
               <button 
               className={searchType ? 'selected' : ""}
-              onClick={() => setSearchType(true)}>
+              onClick={(e) => {
+                e.preventDefault()
+                setSearchType(true)
+              }}>
                 Email
               </button> 
               <button 
               className={searchType ? '' : "selected"}
-              onClick={() => setSearchType(false)}>
+              onClick={(e) => {
+                e.preventDefault()
+                setSearchType(false)
+              }}>
                 Username
               </button>
             </div>
@@ -95,9 +116,9 @@ const UsersModal : FC<IProps> = ({boardId,toggleModal}) => {
                 <input
                 onChange={(e) => inputsHandler(e.target.name,e.target.value)}
                 id='email'
+                type="email" 
                 name='email'
                 value={user.email}
-                type="email" 
                 />
               </div>
               :
@@ -116,14 +137,13 @@ const UsersModal : FC<IProps> = ({boardId,toggleModal}) => {
               </div>
             }
           </div>
-          <button 
-          onClick={confirmAddUser}
-          className='users-modal__add-button'>
-            Confirm 
-          </button>
+          <input 
+          type='submit'
+          value={'Confirm'}
+          className='users-modal__add-button'/>
         </div>
       </div>
-    </div>
+    </form>
   )
 }
 

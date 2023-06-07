@@ -140,8 +140,7 @@ const Columns : FC<IProps> = ({boardId}) => {
       ||
       data.title.length < 2
       ) {
-      alert('Title is required')
-      return
+      return alert('Title is required')
     };  
 
     const tempBoardsList = [...columns];
